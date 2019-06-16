@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.FormularioActivity">
+
+    <EditText
+        android:id="@+id/activity_formulario_nome_contato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/edit_text_margin"
+        android:hint="@string/activity_formulario_edittext_nome"
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/activity_formulario_telefone_contato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/edit_text_margin"
+        android:hint="@string/activity_formulario_edittext_telefone"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/activity_formulario_email_contato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/edit_text_margin"
+        android:hint="@string/activity_formulario_edittext_email"
+        android:inputType="textEmailAddress" />
+
+</LinearLayout>

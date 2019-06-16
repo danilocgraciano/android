@@ -4,21 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.ListagemActivity">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/activity_main_fab_novo_contato"
+        android:id="@+id/activity_listagem_fab_novo_contato"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_action_novo" />
 
     <ListView
-        android:id="@+id/activity_main_lista_contatos"
+        android:id="@+id/activity_listagem_lista_contatos"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

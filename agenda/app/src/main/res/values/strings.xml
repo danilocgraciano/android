@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Agenda</string>
-    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="activity_listagem_title">Agenda</string>
+
+    <string name="activity_formulario_title">Contato</string>
+    <string name="activity_formulario_edittext_nome">Nome</string>
+    <string name="activity_formulario_edittext_telefone">Telefone</string>
+    <string name="activity_formulario_edittext_email">E-mail</string>
+    <string name="activity_formulario_menuitem_salvar">Salvar</string>
+    <string name="activity_formulario_menuitem_excluir">Excluir</string>
+
 </resources>
