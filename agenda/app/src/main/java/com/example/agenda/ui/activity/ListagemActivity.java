@@ -30,12 +30,23 @@ public class ListagemActivity extends AppCompatActivity {
 
     private List<Contato> contatos = dao.all();
 
+    private ListView listView;
+
+    private ArrayAdapter<Contato> adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listagem);
-
+        configuraLista();
         configuraFabNovoContato();
+    }
+
+    private void configuraLista() {
+        listView = findViewById(R.id.activity_listagem_lista_contatos);
+        configuraAdapter();
+        configuraMenuDeEdicao();
+        configuraMenuDeExclusao();
     }
 
     private void configuraFabNovoContato() {
@@ -56,22 +67,19 @@ public class ListagemActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        configuraLista();
+        atualizaListagem();
     }
 
-    private void configuraLista() {
-        final ListView listView = findViewById(R.id.activity_listagem_lista_contatos);
-        configuraAdapter(listView);
-        configuraMenuDeEdicao(listView);
-        configuraMenuDeExclusao(listView);
+    private void atualizaListagem() {
+        adapter.notifyDataSetChanged();
     }
 
-    private void configuraAdapter(ListView listView) {
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, contatos));
+    private void configuraAdapter() {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, contatos);
+        listView.setAdapter(adapter);
     }
 
-    private void configuraMenuDeEdicao(ListView listView) {
+    private void configuraMenuDeEdicao() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,7 +95,7 @@ public class ListagemActivity extends AppCompatActivity {
         startActivity(it);
     }
 
-    private void configuraMenuDeExclusao(final ListView listView) {
+    private void configuraMenuDeExclusao() {
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
@@ -114,7 +122,7 @@ public class ListagemActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.mi_action_excluir:
                         removeContatosSelecionados(listView);
-                        configuraLista();
+                        atualizaListagem();
                         mode.finish();
                         break;
                     default:

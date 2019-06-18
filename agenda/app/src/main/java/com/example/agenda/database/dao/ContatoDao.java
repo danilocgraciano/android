@@ -13,7 +13,7 @@ public class ContatoDao {
     private static int contadorId = 0;
     private final static List<Contato> contatos = new ArrayList<>();
 
-    public void add(@NonNull Contato contato) {
+    public void add(Contato contato) {
         contato.setId(++contadorId);
         contatos.add(contato);
     }
