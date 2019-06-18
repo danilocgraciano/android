@@ -1,5 +1,6 @@
 package com.example.agenda.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,12 +11,15 @@ import com.example.agenda.R;
 import com.example.agenda.database.dao.ContatoDao;
 import com.example.agenda.model.Contato;
 
+import static com.example.agenda.ui.ConstantsActivies.CHAVE_CONTATO;
+
 public class FormularioActivity extends AppCompatActivity {
 
     private EditText campoNome = null;
     private EditText campoTelefone = null;
     private EditText campoEmail = null;
     private final ContatoDao dao = new ContatoDao();
+    private Contato contato = new Contato();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +28,9 @@ public class FormularioActivity extends AppCompatActivity {
 
         inicializaCampos();
 
-        habilitaMenuVoltar();
+        configuraMenuVoltar();
+
+        carregaContato();
 
     }
 
@@ -34,11 +40,27 @@ public class FormularioActivity extends AppCompatActivity {
         campoEmail = findViewById(R.id.activity_formulario_email_contato);
     }
 
-    private void habilitaMenuVoltar() {
+    private void configuraMenuVoltar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+    }
+
+    private void carregaContato() {
+        Intent it = getIntent();
+        if (it.hasExtra(CHAVE_CONTATO)) {
+            contato = (Contato) it.getSerializableExtra(CHAVE_CONTATO);
+            if (contato != null) {
+                preencheCampos();
+            }
+        }
+    }
+
+    private void preencheCampos() {
+        campoNome.setText(contato.getNome());
+        campoTelefone.setText(contato.getTelefone());
+        campoEmail.setText(contato.getEmail());
     }
 
     @Override
@@ -54,8 +76,6 @@ public class FormularioActivity extends AppCompatActivity {
                 salvaContato();
                 finish();
                 break;
-            case R.id.mi_action_excluir:
-                break;
             case android.R.id.home:
                 finish();
                 break;
@@ -66,15 +86,16 @@ public class FormularioActivity extends AppCompatActivity {
     }
 
     private void salvaContato() {
-        Contato contato = criaContato();
-        dao.add(contato);
+        preencheContato();
+        if (contato.getId() > 0)
+            dao.edit(contato);
+        else
+            dao.add(contato);
     }
 
-    private Contato criaContato() {
-        String nome = campoNome.getText().toString();
-        String telefone = campoTelefone.getText().toString();
-        String email = campoEmail.getText().toString();
-
-        return new Contato(nome, telefone, email);
+    private void preencheContato() {
+        contato.setNome(campoNome.getText().toString());
+        contato.setTelefone(campoTelefone.getText().toString());
+        contato.setEmail(campoEmail.getText().toString());
     }
 }
