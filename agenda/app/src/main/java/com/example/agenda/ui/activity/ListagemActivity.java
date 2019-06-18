@@ -1,4 +1,4 @@
-package com.example.agenda.ui;
+package com.example.agenda.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +22,7 @@ import com.example.agenda.model.Contato;
 
 import java.util.List;
 
-import static com.example.agenda.ui.ConstantsActivies.CHAVE_CONTATO;
+import static com.example.agenda.ui.activity.ConstantsActivities.CHAVE_CONTATO;
 
 public class ListagemActivity extends AppCompatActivity {
 

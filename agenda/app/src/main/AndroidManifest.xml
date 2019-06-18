@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.FormularioActivity"
+            android:name=".ui.activity.FormularioActivity"
             android:label="@string/activity_formulario_title"></activity>
         <activity
-            android:name=".ui.ListagemActivity"
+            android:name=".ui.activity.ListagemActivity"
             android:label="@string/activity_listagem_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

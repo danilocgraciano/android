@@ -1,4 +1,4 @@
-package com.example.agenda.ui;
+package com.example.agenda.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import com.example.agenda.R;
 import com.example.agenda.database.dao.ContatoDao;
 import com.example.agenda.model.Contato;
 
-import static com.example.agenda.ui.ConstantsActivies.CHAVE_CONTATO;
+import static com.example.agenda.ui.activity.ConstantsActivities.CHAVE_CONTATO;
 
 public class FormularioActivity extends AppCompatActivity {
 

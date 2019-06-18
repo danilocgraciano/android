@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.FormularioActivity">
+    tools:context=".ui.activity.FormularioActivity">
 
     <EditText
         android:id="@+id/activity_formulario_nome_contato"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/edit_text_margin"
+        android:layout_margin="@dimen/edittext_margin"
         android:hint="@string/activity_formulario_edittext_nome"
         android:inputType="textCapWords" />
 
@@ -19,7 +19,7 @@
         android:id="@+id/activity_formulario_telefone_contato"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/edit_text_margin"
+        android:layout_margin="@dimen/edittext_margin"
         android:hint="@string/activity_formulario_edittext_telefone"
         android:inputType="phone" />
 
@@ -27,7 +27,7 @@
         android:id="@+id/activity_formulario_email_contato"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/edit_text_margin"
+        android:layout_margin="@dimen/edittext_margin"
         android:hint="@string/activity_formulario_edittext_email"
         android:inputType="textEmailAddress" />
 
