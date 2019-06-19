@@ -6,6 +6,6 @@
         android:id="@+id/mi_action_salvar"
         android:icon="@drawable/ic_action_salvar"
         android:title="@string/activity_formulario_menuitem_salvar"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>
