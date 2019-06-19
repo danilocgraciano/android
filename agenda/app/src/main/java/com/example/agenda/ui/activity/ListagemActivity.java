@@ -1,9 +1,14 @@
 package com.example.agenda.ui.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -24,6 +29,7 @@ import com.example.agenda.model.provider.ContatosProvider;
 import java.util.List;
 
 import static com.example.agenda.ui.activity.ConstantsActivities.CHAVE_CONTATO;
+import static com.example.agenda.ui.activity.ConstantsActivities.MY_PERMISSIONS_REQUEST_READ_CONTACTS;
 
 public class ListagemActivity extends AppCompatActivity {
 
@@ -53,8 +59,11 @@ public class ListagemActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mi_action_importar:
-                recuperaListaDeContatos();
-                atualizaListagem();
+                if (possuiPermissaoLeituraContatos()) {
+                    recuperaListaDeContatos();
+                } else {
+                    solicitaPermissaoLeituraContatos();
+                }
                 break;
             default:
                 break;
@@ -62,11 +71,35 @@ public class ListagemActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean possuiPermissaoLeituraContatos() {
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+        return permissionCheck == PackageManager.PERMISSION_GRANTED;
+    }
+
     private void recuperaListaDeContatos() {
+
         List<Contato> contatos = new ContatosProvider(this).recuperar();
         for (Contato contato : contatos)
             dao.add(contato);
         atualizaListagem();
+    }
+
+    private void solicitaPermissaoLeituraContatos() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    recuperaListaDeContatos();
+                }
+                return;
+            }
+        }
     }
 
     private void configuraLista() {
