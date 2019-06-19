@@ -19,6 +19,7 @@ import android.widget.ListView;
 import com.example.agenda.R;
 import com.example.agenda.database.dao.ContatoDao;
 import com.example.agenda.model.Contato;
+import com.example.agenda.model.provider.ContatosProvider;
 
 import java.util.List;
 
@@ -40,6 +41,32 @@ public class ListagemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listagem);
         configuraLista();
         configuraFabNovoContato();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_listagem, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mi_action_importar:
+                recuperaListaDeContatos();
+                atualizaListagem();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void recuperaListaDeContatos() {
+        List<Contato> contatos = new ContatosProvider(this).recuperar();
+        for (Contato contato : contatos)
+            dao.add(contato);
+        atualizaListagem();
     }
 
     private void configuraLista() {
@@ -108,7 +135,7 @@ public class ListagemActivity extends AppCompatActivity {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 MenuInflater menuInflater = mode.getMenuInflater();
-                menuInflater.inflate(R.menu.menu_listagem, menu);
+                menuInflater.inflate(R.menu.menu_contextual_listagem, menu);
                 return true;
             }
 
@@ -145,7 +172,7 @@ public class ListagemActivity extends AppCompatActivity {
             for (int i = 0; i < checkedItems.size(); i++) {
                 if (checkedItems.valueAt(i)) {
                     int index = checkedItems.keyAt(i);
-                    dao.remove(index);
+                    dao.remove(index);//TODO remover pelo ID
                 }
             }
         }
