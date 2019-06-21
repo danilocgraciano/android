@@ -10,6 +10,7 @@
     <string name="activity_listagem_menuitem_excluir">Excluir</string>
     <string name="activity_listagem_menuitem_importar">Importar Contatos</string>
     <string name="activity_listagem_label_itens_selecionados">%d Selecionado(s)</string>
+    <string name="activity_listagem_label_importar_contatos">Importando contatos...</string>
 
     <string name="activity_formulario_title">Contato</string>
     <string name="activity_formulario_edittext_nome">Nome</string>

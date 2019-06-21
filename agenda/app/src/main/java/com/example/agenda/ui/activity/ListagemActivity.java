@@ -1,9 +1,11 @@
 package com.example.agenda.ui.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.agenda.R;
 import com.example.agenda.database.dao.ContatoDao;
@@ -80,10 +84,58 @@ public class ListagemActivity extends AppCompatActivity {
 
     private void recuperaListaDeContatos() {
 
-        List<Contato> contatos = new ContatosProvider(this).recuperar();
-        for (Contato contato : contatos)
-            dao.add(contato);
-        atualizaListagem();
+        final ProgressDialog dialog = configuraProgressDialog();
+        dialog.show();
+
+        importarContatos(dialog);
+
+    }
+
+    private void importarContatos(final ProgressDialog dialog) {
+
+        new AsyncTask<Void, Contato, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    List<Contato> contatos = new ContatosProvider(ListagemActivity.this).recuperar();
+                    for (int i = 0; i < contatos.size(); i++) {
+                        Contato contato = contatos.get(i);
+                        dao.add(contato);
+                        publishProgress(contato);
+                    }
+                } catch (Exception ex) {
+                    Toast.makeText(ListagemActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("ERROR", "doInBackground: ", ex);
+                } finally {
+                    dialog.dismiss();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                dialog.dismiss();
+                atualizaListagem();
+            }
+
+            @Override
+            protected void onProgressUpdate(Contato... values) {
+                Contato contato = values[0];
+                dialog.setMessage(String.format("%s - %s", contato.getNome(), contato.getTelefone()));
+            }
+        }.execute();
+
+    }
+
+    private ProgressDialog configuraProgressDialog() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage(getString(R.string.activity_listagem_label_importar_contatos));
+        dialog.setIndeterminate(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        return dialog;
     }
 
     private void solicitaPermissaoLeituraContatos() {
