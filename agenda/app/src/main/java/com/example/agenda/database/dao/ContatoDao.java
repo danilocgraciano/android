@@ -32,7 +32,12 @@ public class ContatoDao {
         return Collections.unmodifiableList(contatos);
     }
 
-    public void remove(int index) {
-        contatos.remove(index);
+    public void remove(@NonNull Contato contato) {
+        for (int i = 0; i < contatos.size(); i++) {
+            if (contatos.get(i).getId() == contato.getId()) {
+                contatos.remove(i);
+                break;
+            }
+        }
     }
 }

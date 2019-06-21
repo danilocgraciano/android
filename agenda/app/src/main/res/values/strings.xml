@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Agenda</string>
 
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="atencao">Atenção</string>
+    <string name="mensagem_excluir">Deseja realmente excluir?</string>
+
     <string name="activity_listagem_title">Agenda</string>
     <string name="activity_listagem_menuitem_excluir">Excluir</string>
     <string name="activity_listagem_menuitem_importar">Importar Contatos</string>

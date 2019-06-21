@@ -1,7 +1,5 @@
 package com.example.agenda.model;
 
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 
 public class Contato implements Serializable {

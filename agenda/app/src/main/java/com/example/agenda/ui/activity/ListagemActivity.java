@@ -1,6 +1,7 @@
 package com.example.agenda.ui.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,13 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.agenda.R;
 import com.example.agenda.database.dao.ContatoDao;
+import com.example.agenda.dialog.Mensagem;
 import com.example.agenda.model.Contato;
 import com.example.agenda.model.provider.ContatosProvider;
+import com.example.agenda.ui.adapter.ListagemAdapter;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class ListagemActivity extends AppCompatActivity {
 
     private ListView listView;
 
-    private ArrayAdapter<Contato> adapter;
+    private ListagemAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,7 +137,7 @@ public class ListagemActivity extends AppCompatActivity {
     }
 
     private void configuraAdapter() {
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, contatos);
+        adapter = new ListagemAdapter(this, contatos);
         listView.setAdapter(adapter);
     }
 
@@ -178,12 +180,19 @@ public class ListagemActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
+
                     case R.id.mi_action_excluir:
-                        removeContatosSelecionados(listView);
-                        atualizaListagem();
-                        mode.finish();
+
+                        Mensagem.excluir(ListagemActivity.this, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeContatosSelecionados(listView);
+                                atualizaListagem();
+                                mode.finish();
+                            }
+                        });
                         break;
                     default:
                         mode.finish();
@@ -202,10 +211,10 @@ public class ListagemActivity extends AppCompatActivity {
     private void removeContatosSelecionados(ListView listView) {
         SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
         if (checkedItems != null) {
-            for (int i = 0; i < checkedItems.size(); i++) {
+            for (int i = checkedItems.size() - 1; i >= 0; i--) {
                 if (checkedItems.valueAt(i)) {
-                    int index = checkedItems.keyAt(i);
-                    dao.remove(index);//TODO remover pelo ID
+                    Contato contato = adapter.getItem(checkedItems.keyAt(i));
+                    dao.remove(contato);
                 }
             }
         }
