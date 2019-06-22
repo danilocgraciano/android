@@ -6,7 +6,6 @@
         android:id="@+id/mi_action_compartilhar"
         android:icon="@drawable/ic_action_compartilhar"
         android:title="@string/activity_listagem_menuitem_compartilhar"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         app:showAsAction="ifRoom" />
 
     <item

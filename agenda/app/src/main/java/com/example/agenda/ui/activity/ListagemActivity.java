@@ -50,8 +50,6 @@ public class ListagemActivity extends AppCompatActivity {
 
     private ListagemAdapter adapter;
 
-    private ShareActionProvider shareActionProvider;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +61,6 @@ public class ListagemActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_listagem, menu);
-        MenuItem menuItem = menu.findItem(R.id.mi_action_compartilhar);
-        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         return super.onCreateOptionsMenu(menu);
     }
 
