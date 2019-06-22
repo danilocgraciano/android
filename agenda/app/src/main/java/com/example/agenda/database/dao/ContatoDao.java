@@ -1,6 +1,6 @@
 package com.example.agenda.database.dao;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.example.agenda.model.Contato;
 
