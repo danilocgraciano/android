@@ -12,7 +12,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -32,6 +34,7 @@ import com.example.agenda.model.Contato;
 import com.example.agenda.model.provider.ContatosProvider;
 import com.example.agenda.ui.adapter.ListagemAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.agenda.ui.activity.ConstantsActivities.CHAVE_CONTATO;
@@ -47,6 +50,8 @@ public class ListagemActivity extends AppCompatActivity {
 
     private ListagemAdapter adapter;
 
+    private ShareActionProvider shareActionProvider;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,8 @@ public class ListagemActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_listagem, menu);
+        MenuItem menuItem = menu.findItem(R.id.mi_action_compartilhar);
+        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -246,6 +253,10 @@ public class ListagemActivity extends AppCompatActivity {
                             }
                         });
                         break;
+                    case R.id.mi_action_compartilhar:
+                        List<Contato> contatos = pegaContatosSelecionados(listView);
+                        compartilharContatos(contatos);
+                        break;
                     default:
                         mode.finish();
                 }
@@ -260,15 +271,42 @@ public class ListagemActivity extends AppCompatActivity {
         });
     }
 
+    private void compartilharContatos(List<Contato> contatos) {
+
+        String dados = pegaInformacoesDosContatos(contatos);//TODO transformar em arquivo vCard
+        Intent it = new Intent(Intent.ACTION_SEND);
+        it.setType("text/plain");
+        it.putExtra(Intent.EXTRA_TEXT, dados);
+        startActivity(it);
+    }
+
+    private String pegaInformacoesDosContatos(List<Contato> contatos) {
+        StringBuffer dados = new StringBuffer();
+        for (Contato contato : contatos) {
+            dados.append(contato.toString());
+            dados.append("\r\n");
+        }
+        return dados.toString();
+    }
+
     private void removeContatosSelecionados(ListView listView) {
+        List<Contato> contatos = pegaContatosSelecionados(listView);
+        for (int i = contatos.size() - 1; i >= 0; i--) {
+            dao.remove(contatos.get(i));
+        }
+    }
+
+    private List<Contato> pegaContatosSelecionados(ListView listView) {
+        List<Contato> contatos = new ArrayList<>();
         SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
         if (checkedItems != null) {
-            for (int i = checkedItems.size() - 1; i >= 0; i--) {
+            for (int i = 0; i < checkedItems.size(); i++) {
                 if (checkedItems.valueAt(i)) {
                     Contato contato = adapter.getItem(checkedItems.keyAt(i));
-                    dao.remove(contato);
+                    contatos.add(contato);
                 }
             }
         }
+        return contatos;
     }
 }

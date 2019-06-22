@@ -53,6 +53,6 @@ public class Contato implements Serializable {
 
     @Override
     public String toString() {
-        return this.nome;
+        return this.nome + " - " + this.telefone;
     }
 }
