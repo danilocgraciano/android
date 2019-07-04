@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "contato")
 public class Contato implements Serializable {
 
     @PrimaryKey(autoGenerate = true)

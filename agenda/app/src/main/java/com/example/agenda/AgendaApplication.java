@@ -3,6 +3,8 @@ package com.example.agenda;
 import android.app.Application;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
+
 public class AgendaApplication extends Application {
 
     @Override
@@ -15,6 +17,8 @@ public class AgendaApplication extends Application {
         String message = "Bem vindo!";
         if (BuildConfig.DEBUG) {
             message = "Dev Mode...";
+
+            Stetho.initializeWithDefaults(this);
         }
 
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
