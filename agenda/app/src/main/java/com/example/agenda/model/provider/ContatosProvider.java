@@ -31,6 +31,7 @@ public class ContatosProvider {
 
                 String id = recuperaId(cursor);
                 String nome = recuperaNome(cursor);
+                String sobrenome = "";
                 String telefone = "";
                 String email = "";
 
@@ -39,7 +40,7 @@ public class ContatosProvider {
 
                 email = recuperaEmail(id);
 
-                contatos.add(new Contato(nome, telefone, email));
+                contatos.add(new Contato(nome, sobrenome, telefone, email));
             }
             cursor.close();
         }

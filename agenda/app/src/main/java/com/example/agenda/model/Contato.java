@@ -1,22 +1,35 @@
 package com.example.agenda.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Contato implements Serializable {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String nome;
+    private String sobrenome;
     private String telefone;
     private String email;
+    @ColumnInfo(name = "data_cadastro")
+    private Calendar dataCadastro = Calendar.getInstance();
 
     public Contato() {
 
     }
 
-    public Contato(String nome, String telefone, String email) {
+    @Ignore
+    public Contato(String nome, String sobrenome, String telefone, String email) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
+        this.sobrenome = sobrenome;
     }
 
     public int getId() {
@@ -51,8 +64,28 @@ public class Contato implements Serializable {
         this.email = email;
     }
 
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public String getNomeCompleto() {
+        return getNome() + " " + getSobrenome();
+    }
+
+    public Calendar getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Calendar dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
     @Override
     public String toString() {
-        return this.nome + " - " + this.telefone;
+        return this.getNomeCompleto() + " - " + this.telefone;
     }
 }

@@ -18,5 +18,6 @@
     <string name="activity_formulario_edittext_telefone">Telefone</string>
     <string name="activity_formulario_edittext_email">E-mail</string>
     <string name="activity_formulario_menuitem_salvar">Salvar</string>
+    <string name="activity_formulario_edittext_sobrenome">Sobrenome</string>
 
 </resources>

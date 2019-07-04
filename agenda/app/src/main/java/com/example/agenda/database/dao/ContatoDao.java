@@ -1,43 +1,28 @@
 package com.example.agenda.database.dao;
 
-import androidx.annotation.NonNull;
-
 import com.example.agenda.model.Contato;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class ContatoDao {
+import androidx.annotation.NonNull;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
 
-    private static int contadorId = 0;
-    private final static List<Contato> contatos = new ArrayList<>();
+@Dao
+public interface ContatoDao {
 
-    public void add(Contato contato) {
-        contato.setId(++contadorId);
-        contatos.add(contato);
-    }
+    @Insert
+    void add(Contato contato);
 
-    public void edit(@NonNull Contato contato) {
+    @Update
+    void edit(@NonNull Contato contato);
 
-        for (int i = 0; i < contatos.size(); i++) {
-            if (contatos.get(i).getId() == contato.getId()) {
-                contatos.set(i, contato);
-                break;
-            }
-        }
-    }
+    @Query("SELECT * FROM contato")
+    List<Contato> all();
 
-    public List<Contato> all() {
-        return Collections.unmodifiableList(contatos);
-    }
-
-    public void remove(@NonNull Contato contato) {
-        for (int i = 0; i < contatos.size(); i++) {
-            if (contatos.get(i).getId() == contato.getId()) {
-                contatos.remove(i);
-                break;
-            }
-        }
-    }
+    @Delete
+    void remove(@NonNull Contato contato);
 }

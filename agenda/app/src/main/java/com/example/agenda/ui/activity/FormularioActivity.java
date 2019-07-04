@@ -2,12 +2,16 @@ package com.example.agenda.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.example.agenda.R;
+import com.example.agenda.database.AgendaDatabase;
 import com.example.agenda.database.dao.ContatoDao;
 import com.example.agenda.model.Contato;
 
@@ -16,9 +20,10 @@ import static com.example.agenda.ui.activity.ConstantsActivities.CHAVE_CONTATO;
 public class FormularioActivity extends AppCompatActivity {
 
     private EditText campoNome = null;
+    private EditText campoSobrenome = null;
     private EditText campoTelefone = null;
     private EditText campoEmail = null;
-    private final ContatoDao dao = new ContatoDao();
+    private ContatoDao dao;
     private Contato contato = new Contato();
 
     @Override
@@ -28,6 +33,8 @@ public class FormularioActivity extends AppCompatActivity {
 
         inicializaCampos();
 
+        configuraDao();
+
         configuraMenuVoltar();
 
         carregaContato();
@@ -36,8 +43,13 @@ public class FormularioActivity extends AppCompatActivity {
 
     private void inicializaCampos() {
         campoNome = findViewById(R.id.activity_formulario_nome_contato);
+        campoSobrenome = findViewById(R.id.activity_formulario_sobrenome_contato);
         campoTelefone = findViewById(R.id.activity_formulario_telefone_contato);
         campoEmail = findViewById(R.id.activity_formulario_email_contato);
+    }
+
+    private void configuraDao() {
+        this.dao = AgendaDatabase.getInstance(this).getContatoDao();
     }
 
     private void configuraMenuVoltar() {
@@ -59,6 +71,7 @@ public class FormularioActivity extends AppCompatActivity {
 
     private void preencheCampos() {
         campoNome.setText(contato.getNome());
+        campoSobrenome.setText(contato.getSobrenome());
         campoTelefone.setText(contato.getTelefone());
         campoEmail.setText(contato.getEmail());
     }
@@ -95,6 +108,7 @@ public class FormularioActivity extends AppCompatActivity {
 
     private void preencheContato() {
         contato.setNome(campoNome.getText().toString());
+        contato.setSobrenome(campoSobrenome.getText().toString());
         contato.setTelefone(campoTelefone.getText().toString());
         contato.setEmail(campoEmail.getText().toString());
     }

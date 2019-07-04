@@ -7,12 +7,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.agenda.database.AgendaDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -40,9 +46,9 @@ import static com.example.agenda.ui.activity.ConstantsActivities.MY_PERMISSIONS_
 
 public class ListagemActivity extends AppCompatActivity {
 
-    private ContatoDao dao = new ContatoDao();
+    private ContatoDao dao;
 
-    private List<Contato> contatos = dao.all();
+    private List<Contato> contatos = new ArrayList<>();
 
     private ListView listView;
 
@@ -52,8 +58,13 @@ public class ListagemActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listagem);
+        configuraDao();
         configuraLista();
         configuraFabNovoContato();
+    }
+
+    private void configuraDao() {
+        this.dao = AgendaDatabase.getInstance(this).getContatoDao();
     }
 
     @Override
@@ -186,6 +197,8 @@ public class ListagemActivity extends AppCompatActivity {
     }
 
     private void atualizaListagem() {
+        contatos.clear();
+        contatos.addAll(dao.all());
         adapter.notifyDataSetChanged();
     }
 
