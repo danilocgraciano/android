@@ -22,16 +22,6 @@
             tools:targetApi="o" />
 
         <EditText
-            android:id="@+id/activity_formulario_sobrenome_contato"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/edittext_margin"
-            android:hint="@string/activity_formulario_edittext_sobrenome"
-            android:inputType="textCapWords"
-            android:importantForAutofill="no"
-            tools:targetApi="o" />
-
-        <EditText
             android:id="@+id/activity_formulario_telefone_contato"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

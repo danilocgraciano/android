@@ -20,7 +20,6 @@ import static com.example.agenda.ui.activity.ConstantsActivities.CHAVE_CONTATO;
 public class FormularioActivity extends AppCompatActivity {
 
     private EditText campoNome = null;
-    private EditText campoSobrenome = null;
     private EditText campoTelefone = null;
     private EditText campoEmail = null;
     private ContatoDao dao;
@@ -43,7 +42,6 @@ public class FormularioActivity extends AppCompatActivity {
 
     private void inicializaCampos() {
         campoNome = findViewById(R.id.activity_formulario_nome_contato);
-        campoSobrenome = findViewById(R.id.activity_formulario_sobrenome_contato);
         campoTelefone = findViewById(R.id.activity_formulario_telefone_contato);
         campoEmail = findViewById(R.id.activity_formulario_email_contato);
     }
@@ -71,7 +69,6 @@ public class FormularioActivity extends AppCompatActivity {
 
     private void preencheCampos() {
         campoNome.setText(contato.getNome());
-        campoSobrenome.setText(contato.getSobrenome());
         campoTelefone.setText(contato.getTelefone());
         campoEmail.setText(contato.getEmail());
     }
@@ -108,7 +105,6 @@ public class FormularioActivity extends AppCompatActivity {
 
     private void preencheContato() {
         contato.setNome(campoNome.getText().toString());
-        contato.setSobrenome(campoSobrenome.getText().toString());
         contato.setTelefone(campoTelefone.getText().toString());
         contato.setEmail(campoEmail.getText().toString());
     }

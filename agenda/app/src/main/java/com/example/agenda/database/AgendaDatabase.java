@@ -12,7 +12,7 @@ import androidx.room.TypeConverters;
 
 import static com.example.agenda.database.AgendaMigrations.TODAS_MIGRATIONS;
 
-@Database(entities = {Contato.class}, version = 3, exportSchema = false)
+@Database(entities = {Contato.class}, version = 4, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AgendaDatabase extends RoomDatabase {
 
