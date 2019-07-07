@@ -39,7 +39,7 @@ public class ContatosProvider {
 
                 email = recuperaEmail(id);
 
-                contatos.add(new Contato(nome, telefone, email));
+                contatos.add(new Contato(nome, email));//TODO ajustar campo telefone
             }
             cursor.close();
         }

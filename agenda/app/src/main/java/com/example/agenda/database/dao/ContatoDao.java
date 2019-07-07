@@ -15,7 +15,7 @@ import androidx.room.Update;
 public interface ContatoDao {
 
     @Insert
-    void add(Contato contato);
+    Long add(Contato contato);
 
     @Update
     void edit(@NonNull Contato contato);

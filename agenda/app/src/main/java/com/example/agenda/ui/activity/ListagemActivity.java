@@ -135,7 +135,7 @@ public class ListagemActivity extends AppCompatActivity {
             @Override
             protected void onProgressUpdate(Contato... values) {
                 Contato contato = values[0];
-                dialog.setMessage(String.format("%s - %s", contato.getNome(), contato.getTelefone()));
+                dialog.setMessage(contato.getNome());//TODO Ajustar campo telefone
             }
         }.execute();
 

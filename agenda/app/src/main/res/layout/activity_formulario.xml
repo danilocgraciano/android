@@ -22,11 +22,19 @@
             tools:targetApi="o" />
 
         <EditText
-            android:id="@+id/activity_formulario_telefone_contato"
+            android:id="@+id/activity_formulario_telefone_1_contato"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/edittext_margin"
-            android:hint="@string/activity_formulario_edittext_telefone"
+            android:hint="@string/activity_formulario_edittext_telefone1"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/activity_formulario_telefone_2_contato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/edittext_margin"
+            android:hint="@string/activity_formulario_edittext_telefone2"
             android:inputType="phone" />
 
         <EditText

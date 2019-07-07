@@ -55,6 +55,6 @@ public class ListagemAdapter extends BaseAdapter {
 
     private void configuraCampoTelefone(View view, Contato contato) {
         TextView campoTelefone = view.findViewById(R.id.item_contato_telefone);
-        campoTelefone.setText(contato.getTelefone());
+        //campoTelefone.setText(contato.getTelefone());//TODO Ajustar
     }
 }

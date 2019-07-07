@@ -13,9 +13,11 @@ public class Contato implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
     private String nome;
-    private String telefone;
+
     private String email;
+
     @ColumnInfo(name = "data_cadastro")
     private Calendar dataCadastro = Calendar.getInstance();
 
@@ -24,9 +26,8 @@ public class Contato implements Serializable {
     }
 
     @Ignore
-    public Contato(String nome, String telefone, String email) {
+    public Contato(String nome, String email) {
         this.nome = nome;
-        this.telefone = telefone;
         this.email = email;
     }
 
@@ -44,14 +45,6 @@ public class Contato implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public String getEmail() {
@@ -72,6 +65,6 @@ public class Contato implements Serializable {
 
     @Override
     public String toString() {
-        return this.getNome() + " - " + this.getTelefone();
+        return this.getNome();
     }
 }
