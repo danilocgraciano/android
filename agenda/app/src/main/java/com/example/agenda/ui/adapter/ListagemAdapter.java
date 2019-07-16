@@ -8,7 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.agenda.R;
+import com.example.agenda.asynctask.FindTelefoneByUserAndTypeTask;
 import com.example.agenda.model.Contato;
+import com.example.agenda.model.Telefone;
+import com.example.agenda.model.TipoTelefone;
 
 import java.util.List;
 
@@ -53,8 +56,15 @@ public class ListagemAdapter extends BaseAdapter {
         campoNome.setText(contato.getNome());
     }
 
-    private void configuraCampoTelefone(View view, Contato contato) {
-        TextView campoTelefone = view.findViewById(R.id.item_contato_telefone);
-        //campoTelefone.setText(contato.getTelefone());//TODO Ajustar
+    private void configuraCampoTelefone(View view, final Contato contato) {
+        final TextView campoTelefone = view.findViewById(R.id.item_contato_telefone);
+        new FindTelefoneByUserAndTypeTask(context, contato.getId(), TipoTelefone.TELEFONE_1, new FindTelefoneByUserAndTypeTask.Callback() {
+            @Override
+            public void onResult(Telefone telefone) {
+                if (telefone != null)
+                    campoTelefone.setText(telefone.getNumero());
+            }
+        }).execute();
+
     }
 }

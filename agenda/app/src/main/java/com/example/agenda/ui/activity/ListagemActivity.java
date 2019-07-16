@@ -5,21 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.example.agenda.database.AgendaDatabase;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -29,24 +15,31 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.agenda.R;
+import com.example.agenda.asynctask.AllContatosTask;
+import com.example.agenda.asynctask.ImportaContatosTask;
+import com.example.agenda.asynctask.RemoveContatosTask;
+import com.example.agenda.database.AgendaDatabase;
 import com.example.agenda.database.dao.ContatoDao;
 import com.example.agenda.dialog.Mensagem;
 import com.example.agenda.model.Contato;
-import com.example.agenda.model.provider.ContatosProvider;
 import com.example.agenda.ui.adapter.ListagemAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import static com.example.agenda.ui.activity.ConstantsActivities.CHAVE_CONTATO;
 import static com.example.agenda.ui.activity.ConstantsActivities.MY_PERMISSIONS_REQUEST_READ_CONTACTS;
 
 public class ListagemActivity extends AppCompatActivity {
-
-    private ContatoDao dao;
 
     private List<Contato> contatos = new ArrayList<>();
 
@@ -58,13 +51,8 @@ public class ListagemActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listagem);
-        configuraDao();
         configuraLista();
         configuraFabNovoContato();
-    }
-
-    private void configuraDao() {
-        this.dao = AgendaDatabase.getInstance(this).getContatoDao();
     }
 
     @Override
@@ -99,45 +87,12 @@ public class ListagemActivity extends AppCompatActivity {
         final ProgressDialog dialog = configuraProgressDialog();
         dialog.show();
 
-        importarContatos(dialog);
-
-    }
-
-    private void importarContatos(final ProgressDialog dialog) {
-
-        new AsyncTask<Void, Contato, Void>() {
-
+        new ImportaContatosTask(this, dialog, new ImportaContatosTask.Callback() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    List<Contato> contatos = new ContatosProvider(ListagemActivity.this).recuperar();
-                    for (int i = 0; i < contatos.size(); i++) {
-                        Contato contato = contatos.get(i);
-                        dao.add(contato);
-                        publishProgress(contato);
-                    }
-                } catch (Exception ex) {
-                    Toast.makeText(ListagemActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("ERROR", "doInBackground: ", ex);
-                } finally {
-                    dialog.dismiss();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                dialog.dismiss();
+            public void onResult() {
                 atualizaListagem();
             }
-
-            @Override
-            protected void onProgressUpdate(Contato... values) {
-                Contato contato = values[0];
-                dialog.setMessage(contato.getNome());//TODO Ajustar campo telefone
-            }
-        }.execute();
+        }).execute();
 
     }
 
@@ -197,9 +152,15 @@ public class ListagemActivity extends AppCompatActivity {
     }
 
     private void atualizaListagem() {
-        contatos.clear();
-        contatos.addAll(dao.all());
-        adapter.notifyDataSetChanged();
+        new AllContatosTask(this, new AllContatosTask.Callback() {
+            @Override
+            public void onResult(List<Contato> data) {
+                contatos.clear();
+                contatos.addAll(data);
+                adapter.notifyDataSetChanged();
+            }
+        }).execute();
+
     }
 
     private void configuraAdapter() {
@@ -298,9 +259,7 @@ public class ListagemActivity extends AppCompatActivity {
 
     private void removeContatosSelecionados(ListView listView) {
         List<Contato> contatos = pegaContatosSelecionados(listView);
-        for (int i = contatos.size() - 1; i >= 0; i--) {
-            dao.remove(contatos.get(i));
-        }
+        new RemoveContatosTask(this, contatos).execute();
     }
 
     private List<Contato> pegaContatosSelecionados(ListView listView) {
